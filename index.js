@@ -4,6 +4,7 @@ const Employee = require("./lib/employee");
 const Manager = require("./lib/manager");
 const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
+const generate = require("./src/src");
 const { RSA_PKCS1_OAEP_PADDING } = require("constants");
 const { start } = require("repl");
 
@@ -105,7 +106,7 @@ function handleChoice (choice) {
         const htmlEnd = generateEnd();
         html.push(htmlEnd);
         const final = html.join('');
-        fs.writeFile('try.html', final, (err) => err ? console.log(err) : console.log("html completed"));
+        fs.writeFile('./dist/render.html', final, (err) => err ? console.log(err) : console.log("html completed"));
     }
 }
 
