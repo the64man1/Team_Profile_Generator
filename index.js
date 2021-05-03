@@ -11,6 +11,8 @@ const managerArr = [];
 const engineerArr = [];
 const internArr = [];
 
+const noop = () => {};
+
 const manager_prompt = [
     {
         name: "manager_name",
@@ -103,13 +105,16 @@ function startPrompt () {
         .then((answer) => {
             const manager = new Manager(answer.manager_name, answer.manager_id, answer.manager_email, answer.manager_number);
             managerArr.push(manager)
+            const htmlContent = generateManagerCard(manager);
+            fs.writeFile('try.html', htmlContent, noop);
 
             if (answer.choice == "Engineer") {
                 engineerPrompt();
             } else if (answer.choice == "Intern") {
                 internPrompt();
             } else {
-                console.log(managerArr[0].name);
+                const htmlEnd = generateEnd();
+                fs.appendFile('try.html', htmlEnd, (err) => err ? console.log(err) : console.log("html completed"));
             }
         })
 }
@@ -119,13 +124,16 @@ function engineerPrompt () {
         .then((answer) => {
             const engineer = new Engineer(answer.engineer_name, answer.engineer_id, answer.engineer_email, answer.engineer_github);
             engineerArr.push(engineer);
+            const htmlContent = generateEngineerCard(engineer);
+            fs.appendFile('try.html', htmlContent, noop);
             
             if (answer.choice == "Engineer") {
                 engineerPrompt();
             } else if (answer.choice == "Intern") {
                 internPrompt();
             } else {
-                console.log(engineerArr[1].id);
+                const htmlEnd = generateEnd();
+                fs.appendFile('try.html', htmlEnd, (err) => err ? console.log(err) : console.log("html completed"));
             }
         })
 }
@@ -135,13 +143,16 @@ function internPrompt () {
         .then((answer) => {
             const intern = new Intern(answer.intern_name, answer.intern_id, answer.intern_email, answer.intern_school);
             internArr.push(intern);
+            const htmlContent = generateInternCard(intern);
+            fs.appendFile('try.html', htmlContent, noop);
             
             if (answer.choice == "Engineer") {
                 engineerPrompt();
             } else if (answer.choice == "Intern") {
                 internPrompt();
             } else {
-                console.log(managerArr, engineerArr, internArr);
+                const htmlEnd = generateEnd();
+                fs.appendFile('try.html', htmlEnd, (err) => err ? console.log(err) : console.log("html completed"));
             }
         })
 }
@@ -168,11 +179,43 @@ const generateManagerCard = (manager) => `
             <div class="card-body">
                 <ul>
                     <li class="li-group-item">${manager.id}</li>
-                    <li class="li-group-item">${manager.email}</li>
+                    <li class="li-group-item"><a href="mailto:${manager.email}">${manager.email}</a></li>
                     <li class="li-group-item">${manager.officeNumber}</li>
                 </ul>
             </div>
+        </div>`
+
+const generateEngineerCard = (engineer) => `
+    <div class="card">
+        <div class="card-header text-white bg-dark">
+            <p>${engineer.name}</p>
+            <p>Engineer</p>
         </div>
+        <div class="card-body">
+            <ul>
+                <li class="li-group-item">${engineer.id}</li>
+                <li class="li-group-item"><a href="mailto:${engineer.email}">${engineer.email}</a></li>
+                <li class="li-group-item"><a href="https://www.github.com/${engineer.github}">${engineer.github}</a></li>
+            </ul>
+        </div>
+    </div>`
+
+const generateInternCard = (intern) => `
+    <div class="card">
+        <div class="card-header text-white bg-dark">
+            <p>${intern.name}</p>
+            <p>Intern</p>
+        </div>
+        <div class="card-body">
+            <ul>
+                <li class="li-group-item">${intern.id}</li>
+                <li class="li-group-item"><a href="mailto:${intern.email}">${intern.email}</a></li>
+                <li class="li-group-item">${intern.school}</li>
+            </ul>
+        </div>
+    </div>`
+
+const generateEnd = () => `
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
