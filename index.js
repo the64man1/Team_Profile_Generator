@@ -7,11 +7,7 @@ const Intern = require("./lib/intern");
 const { RSA_PKCS1_OAEP_PADDING } = require("constants");
 const { start } = require("repl");
 
-const managerArr = [];
-const engineerArr = [];
-const internArr = [];
-
-const noop = () => {};
+const html = [];
 
 const manager_prompt = [
     {
@@ -100,22 +96,27 @@ const intern_prompt = [
     }
 ]
 
+function handleChoice (choice) {
+    if (choice == "Engineer") {
+        engineerPrompt();
+    } else if (choice == "Intern") {
+        internPrompt();
+    } else {
+        const htmlEnd = generateEnd();
+        html.push(htmlEnd);
+        const final = html.join('');
+        fs.writeFile('try.html', final, (err) => err ? console.log(err) : console.log("html completed"));
+    }
+}
+
 function startPrompt () {
     inquirer.prompt(manager_prompt)
         .then((answer) => {
             const manager = new Manager(answer.manager_name, answer.manager_id, answer.manager_email, answer.manager_number);
-            managerArr.push(manager)
             const htmlContent = generateManagerCard(manager);
-            fs.writeFile('try.html', htmlContent, noop);
+            html.push(htmlContent);
 
-            if (answer.choice == "Engineer") {
-                engineerPrompt();
-            } else if (answer.choice == "Intern") {
-                internPrompt();
-            } else {
-                const htmlEnd = generateEnd();
-                fs.appendFile('try.html', htmlEnd, (err) => err ? console.log(err) : console.log("html completed"));
-            }
+            handleChoice(answer.choice);
         })
 }
 
@@ -123,18 +124,10 @@ function engineerPrompt () {
     inquirer.prompt(engineer_prompt)
         .then((answer) => {
             const engineer = new Engineer(answer.engineer_name, answer.engineer_id, answer.engineer_email, answer.engineer_github);
-            engineerArr.push(engineer);
             const htmlContent = generateEngineerCard(engineer);
-            fs.appendFile('try.html', htmlContent, noop);
+            html.push(htmlContent);
             
-            if (answer.choice == "Engineer") {
-                engineerPrompt();
-            } else if (answer.choice == "Intern") {
-                internPrompt();
-            } else {
-                const htmlEnd = generateEnd();
-                fs.appendFile('try.html', htmlEnd, (err) => err ? console.log(err) : console.log("html completed"));
-            }
+            handleChoice(answer.choice);
         })
 }
 
@@ -142,18 +135,10 @@ function internPrompt () {
     inquirer.prompt(intern_prompt)
         .then((answer) => {
             const intern = new Intern(answer.intern_name, answer.intern_id, answer.intern_email, answer.intern_school);
-            internArr.push(intern);
             const htmlContent = generateInternCard(intern);
-            fs.appendFile('try.html', htmlContent, noop);
+            html.push(htmlContent);
             
-            if (answer.choice == "Engineer") {
-                engineerPrompt();
-            } else if (answer.choice == "Intern") {
-                internPrompt();
-            } else {
-                const htmlEnd = generateEnd();
-                fs.appendFile('try.html', htmlEnd, (err) => err ? console.log(err) : console.log("html completed"));
-            }
+            handleChoice(answer.choice);
         })
 }
 
@@ -171,46 +156,46 @@ const generateManagerCard = (manager) => `
         <h1>My Team</h1>
     </header>
     <div class="container">
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-header text-white bg-dark">
                 <p>${manager.name}</p>
                 <p>Manager</p>
             </div>
             <div class="card-body">
                 <ul>
-                    <li class="li-group-item">${manager.id}</li>
-                    <li class="li-group-item"><a href="mailto:${manager.email}">${manager.email}</a></li>
-                    <li class="li-group-item">${manager.officeNumber}</li>
+                    <li class="list-group-item">ID: ${manager.id}</li>
+                    <li class="list-group-item">Email: <a href="mailto:${manager.email}">${manager.email}</a></li>
+                    <li class="list-group-item">Office Number: ${manager.officeNumber}</li>
                 </ul>
             </div>
         </div>`
 
 const generateEngineerCard = (engineer) => `
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-header text-white bg-dark">
             <p>${engineer.name}</p>
             <p>Engineer</p>
         </div>
         <div class="card-body">
             <ul>
-                <li class="li-group-item">${engineer.id}</li>
-                <li class="li-group-item"><a href="mailto:${engineer.email}">${engineer.email}</a></li>
-                <li class="li-group-item"><a href="https://www.github.com/${engineer.github}">${engineer.github}</a></li>
+                <li class="list-group-item">ID: ${engineer.id}</li>
+                <li class="list-group-item">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></li>
+                <li class="list-group-item">GitHub: <a href="https://www.github.com/${engineer.github}" target="_blank">${engineer.github}</a></li>
             </ul>
         </div>
     </div>`
 
 const generateInternCard = (intern) => `
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-header text-white bg-dark">
             <p>${intern.name}</p>
             <p>Intern</p>
         </div>
         <div class="card-body">
             <ul>
-                <li class="li-group-item">${intern.id}</li>
-                <li class="li-group-item"><a href="mailto:${intern.email}">${intern.email}</a></li>
-                <li class="li-group-item">${intern.school}</li>
+                <li class="list-group-item">ID: ${intern.id}</li>
+                <li class="list-group-item">Email: <a href="mailto:${intern.email}">${intern.email}</a></li>
+                <li class="list-group-item">School: ${intern.school}</li>
             </ul>
         </div>
     </div>`
@@ -225,24 +210,6 @@ const generateEnd = () => `
 
 startPrompt();
 
-/* inquirer.prompt(manager_prompt)
-    .then((answer) => {
-    const manager = new Manager(answer.manager_name, answer.manager_id, answer.manager_email, answer.manager_number);
-    manager.getName(answer.manager_name);
-    manager.getId(answer.manager_id);
-    manager.getEmail(answer.manager_email);
-    const role = manager.getRole();
-    console.log(manager.name, manager.id, manager.email, manager.officeNumber, role);
-    })
-    .then((answer) => {
-        if (answer.choice == "Engineer") {
-            inquirer.prompt(engineer_prompt)
-        }
-    }) */
-
-
-    //const htmlContent = generateManagerCard(manager);
-    //fs.writeFile('try.html', htmlContent, (err) => err ? console.log(err) : console.log("html generated"))
 
     
 /* function generateManagerCard(manager) {

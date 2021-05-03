@@ -9,6 +9,13 @@ describe("Intern", () => {
             expect(intern.id).toEqual(3);
             expect(intern.email).toEqual("james@email.com");
             expect(intern.school).toEqual("Rice");
+        }),
+        it("getRole should return 'Intern'", () => {
+            const intern = new Intern();
+
+            const role = intern.getRole();
+
+            expect(role).toEqual("Intern");
         })
     })
 })

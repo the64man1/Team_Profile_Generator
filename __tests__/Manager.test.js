@@ -9,6 +9,13 @@ describe("Manager", () => {
             expect(manager.id).toEqual(4);
             expect(manager.email).toEqual("max@email.com");
             expect(manager.officeNumber).toEqual(10);
+        }),
+        it("getRole should return 'Manager'", () => {
+            const manager = new Manager();
+
+            const role = manager.getRole();
+
+            expect(role).toEqual("Manager");
         })
     })
 })
