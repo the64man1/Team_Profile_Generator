@@ -32,6 +32,8 @@ To use the Team Profile Generator, clone the repository by running “git clone 
 ## Usage
     
 Users are free to use this project to generate a Team Profile hmtl page for their personal use
+
+Video tutorial: https://youtu.be/sLdy3pRY1Fs
     
 ## License
     
