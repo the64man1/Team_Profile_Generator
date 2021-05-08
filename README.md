@@ -46,6 +46,8 @@ If you would like to contribute to this project by adding sections or modifying 
 ## Tests
     
 Users can test the functionality of this project by running the program from the command line, then opening the generated HTML page on their browser. The rendered HTML page is stored in the 'dist' folder as "render.html"
+
+Users can also verify functionality of classes and methods by running "npm run test" on the command line while in the folder hosting the repo files.
     
 ## Questions
     
