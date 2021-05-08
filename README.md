@@ -9,7 +9,7 @@ I wanted to write a program that would allow a business owner to easily compile 
 I wanted to build my skills in creating classes and handling the object data stored in classes
 
 
-With this program, a user can use the command line to easily generatea team profile page
+With this program, a user can use the command line to easily generate a team profile page
 
 
 I learned how to structure classes and subclasses and how to build Jest testing files to verify that my classes and methods are running appropriately
