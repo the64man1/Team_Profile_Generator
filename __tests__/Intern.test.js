@@ -16,6 +16,13 @@ describe("Intern", () => {
             const role = intern.getRole();
 
             expect(role).toEqual("Intern");
+        }),
+        it("getSchool should return school value the user passed into the object instance'", () => {
+            const intern = new Intern("James", 3, "james@email.com", "Rice");
+
+            const school = intern.getSchool();
+
+            expect(school).toEqual("Rice");
         })
     })
 })

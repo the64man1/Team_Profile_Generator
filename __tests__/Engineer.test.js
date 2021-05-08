@@ -16,6 +16,13 @@ describe("Engineer", () => {
             const role = engineer.getRole();
 
             expect(role).toEqual("Engineer");
+        }),
+        it("getGitHub should return GitHub value the user passed into the object instance'", () => {
+            const engineer = new Engineer("Dave", 2, "dave@email.com", "dave123");
+
+            const github = engineer.getGitHub();
+
+            expect(github).toEqual("dave123");
         })
     })
 })
