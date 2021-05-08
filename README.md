@@ -27,7 +27,7 @@ I learned how to structure classes and subclasses and how to build Jest testing 
     
 ## Installation
     
-To use the Team Profile Generator, clone the repository by running “git clone git@github.com:the64man1/Team_Profile_Generator.git" on your console. Then install inquirer, fs and Jest npm packages by running “npm install” in the folder where you cloned the repo files
+To use the Team Profile Generator, clone the repository by running “git clone `git@github.com:the64man1/Team_Profile_Generator.git`" on your console. Then install inquirer, fs and Jest npm packages by running “npm install” in the folder where you cloned the repo files
     
 ## Usage
     
